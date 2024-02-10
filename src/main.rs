@@ -1,7 +1,7 @@
 use std::env;
-pub use std::path::Path;
+use std::path::Path;
 
-use feature_scaling::{features, file_ops, results};
+use feature_scaling::{file_ops, mean_normal};
 
 fn argument_check(args: &[String]) {
     if args.len() < 4 {
@@ -48,8 +48,8 @@ fn main() {
         }
     };
 
-    let result_x = features::mean_normal(&x_ptr.to_vec());
-    let result_y = results::mean_normal(&y_ptr);
+    let result_x = mean_normal::features(&x_ptr.to_vec());
+    let result_y = mean_normal::results(&y_ptr);
 
     //  Write to file
     match file_ops::write_data(&result_x, &result_y, output_file_path) {

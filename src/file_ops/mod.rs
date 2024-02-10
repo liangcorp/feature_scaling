@@ -6,6 +6,7 @@ use std::path::Path;
 
 type DoubleVecF64 = Vec<Vec<f64>>;
 
+/// Read data from text file into vectors
 pub fn read_data(path: &Path) -> Result<(Box<DoubleVecF64>, Box<Vec<f64>>), io::Error> {
     let lines = match File::open(path) {
         Ok(file) => io::BufReader::new(file).lines(),
@@ -40,6 +41,7 @@ pub fn read_data(path: &Path) -> Result<(Box<DoubleVecF64>, Box<Vec<f64>>), io::
     Ok((Box::new(x), Box::new(y)))
 }
 
+/// Write data into text file
 pub fn write_data(result_x: &[Vec<f64>], result_y: &[f64], path: &Path) -> Result<(), io::Error> {
     let mut file = match File::create(path) {
         Ok(f) => io::BufWriter::new(f),

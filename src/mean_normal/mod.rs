@@ -1,10 +1,10 @@
-//! # Use mean normalization on 2D array.
-//! This is used on X that usually contains multiple features.
+//! # Use mean normalization on 2D and 1D array.
 //!
-#[allow(dead_code)]
+
 type DoubleVecF64 = Vec<Vec<f64>>;
 
-pub fn mean_normal(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
+/// This is used on X that usually contains multiple features (2D).
+pub fn features(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
     let mut max: Vec<f64> = Vec::new();
     let mut min: Vec<f64> = Vec::new();
     let mut mean: Vec<f64> = Vec::new();
@@ -63,6 +63,45 @@ pub fn mean_normal(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
         for i in 0..row {
             result[i][j] = (x[i][j] - mean[j]) / std_dev[j];
         }
+    }
+
+    Box::new(result)
+}
+
+/// This is used on Y that is a 1D vector.
+pub fn results(v: &Vec<f64>) -> Box<Vec<f64>> {
+    let mut max: f64;
+    let mut min: f64;
+    let mut result: Vec<f64> = Vec::new();
+    let mut sum: f64 = 0.0;
+
+    /* Set max and min for feature */
+    max = v[0];
+    min = v[0];
+
+    /* Find max and min for feature */
+    for i in v.iter() {
+        if max < *i {
+            max = *i;
+        } else if min > *i {
+            min = *i;
+        } else {
+            // do nothing
+        }
+        sum += *i;
+    }
+
+    let mean = sum / v.len() as f64;
+
+    sum = 0.0;
+    for i in v.iter() {
+        sum += (*i - mean) * (*i - mean);
+    }
+
+    let std_dev = (sum / v.len() as f64).sqrt();
+
+    for i in v.iter() {
+        result.push((*i - mean) / std_dev);
     }
 
     Box::new(result)
