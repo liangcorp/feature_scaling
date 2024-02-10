@@ -46,7 +46,7 @@ fn main() {
     };
 
     let input_file_path = Path::new(&args[1]);
-    println!("./{}", input_file_path.to_str().unwrap());
+    print!("./{}... ", input_file_path.to_str().unwrap());
 
     let output_file_path = Path::new(&args[3]);
 
@@ -58,13 +58,15 @@ fn main() {
             std::process::exit(exitcode::IOERR);
         }
     };
+    println!("OK");
 
     let result_x = mean_normal::features(&x_ptr.to_vec());
     let result_y = mean_normal::results(&y_ptr);
 
     //  Write to file
+    print!("Writting data to file... ");
     match file_ops::write_data(&result_x, &result_y, output_file_path) {
-        Ok(_) => println!("Data written to file"),
+        Ok(_) => println!("OK"),
         Err(e) => {
             eprintln!("{}", e.get_ref().unwrap());
             std::process::exit(exitcode::IOERR);
