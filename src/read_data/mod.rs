@@ -9,7 +9,7 @@ type DoubleVecF64 = Vec<Vec<f64>>;
 pub fn get_data(path: &Path) -> Result<(Box<DoubleVecF64>, Box<Vec<f64>>), io::Error> {
     let lines = match File::open(path) {
         Ok(file) => io::BufReader::new(file).lines(),
-        Err(ref error) if error.kind() == ErrorKind::NotFound => {
+        Err(error) if error.kind() == ErrorKind::NotFound => {
             return Err(Error::new(ErrorKind::NotFound, "File not found"));
         }
         Err(error) if error.kind() == ErrorKind::PermissionDenied => {
@@ -21,20 +21,20 @@ pub fn get_data(path: &Path) -> Result<(Box<DoubleVecF64>, Box<Vec<f64>>), io::E
     };
 
     let mut y: Vec<f64> = Vec::new();
-    let mut v: Vec<String> = Vec::new();
+    let mut x: Vec<String> = Vec::new();
 
     // Read the file line by line
     // split each line by the last ',' into two vectors of v and y
     for line in lines {
         if let Some(data_tuple) = line.unwrap().rsplit_once(',') {
-            v.push(data_tuple.0.to_string());
+            x.push(data_tuple.0.to_string());
             y.push(data_tuple.1.parse::<f64>().expect("Failed"));
         }
     }
 
     let mut tmp: Vec<Vec<&str>> = Vec::new();
 
-    for i in v.iter() {
+    for i in x.iter() {
         tmp.push(i.split(',').collect::<Vec<&str>>());
     }
 
@@ -56,4 +56,3 @@ pub fn get_data(path: &Path) -> Result<(Box<DoubleVecF64>, Box<Vec<f64>>), io::E
 
     Ok((Box::new(x), Box::new(y)))
 }
-

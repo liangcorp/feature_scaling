@@ -9,18 +9,16 @@
 //! NOTE: Run free on pointers of the structure
 //! and its elements in main.
 //!
-//! NOTE: The values of first feature (i.e. x\[0\] is 1.0)
-//!
 #[allow(dead_code)]
-type DoubleVecF32 = Vec<Vec<f64>>;
+type DoubleVecF64 = Vec<Vec<f64>>;
 
-pub fn mean_normal_multiple(v: &[Vec<f64>]) -> (Box<DoubleVecF32>, Box<Vec<f64>>, Box<Vec<f64>>) {
+pub fn mean_normal_multiple(v: &[Vec<f64>]) -> (Box<DoubleVecF64>, Box<Vec<f64>>, Box<Vec<f64>>) {
     let mut max: Vec<f64> = Vec::new();
     let mut min: Vec<f64> = Vec::new();
     let mut mean: Vec<f64> = Vec::new();
     let mut std_dev: Vec<f64> = Vec::new();
 
-    let mut result: DoubleVecF32 = v.to_vec();
+    let mut result: DoubleVecF64 = v.to_vec();
 
     let row = v.len();
     let col = v[0].len();

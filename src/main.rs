@@ -1,8 +1,8 @@
 use std::env;
 pub use std::path::Path;
 
-use feature_scaling::read_data;
 use feature_scaling::features::mean_normal_multiple;
+use feature_scaling::read_data;
 use feature_scaling::results::mean_normal_single;
 
 fn main() {
@@ -27,7 +27,6 @@ fn main() {
 
     let x = *x_ptr;
     let y = *y_ptr;
-
 
     let (ex_2_nor_y, y_mean, y_std_dev) = mean_normal_single(&y);
 
