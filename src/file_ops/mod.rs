@@ -20,8 +20,8 @@ pub fn get_data(path: &Path) -> Result<(Box<DoubleVecF64>, Box<Vec<f64>>), io::E
         }
     };
 
-    let mut x_slice: Vec<String> = Vec::new();
-    let mut y: Vec<f64> = Vec::new();
+    let mut x_slice: Vec<String> = vec![];
+    let mut y: Vec<f64> = vec![];
 
     // Read the file line by line
     // split each line by the last ',' into two vectors of v and y
@@ -32,10 +32,14 @@ pub fn get_data(path: &Path) -> Result<(Box<DoubleVecF64>, Box<Vec<f64>>), io::E
         }
     }
 
-    let mut x: Vec<Vec<f64>> = Vec::new();
+    let mut x: Vec<Vec<f64>> = vec![];
     for i in x_slice.iter() {
         x.push(i.split(',').map(|x| x.parse::<f64>().unwrap()).collect());
     }
 
     Ok((Box::new(x), Box::new(y)))
+}
+
+pub fn write_data(x: &[Vec<f64>], y: &[f64], path: &Path) {
+
 }
