@@ -39,7 +39,7 @@ fn main() {
     let input_file_path = Path::new(&args[1]);
     let output_file_path = Path::new(&args[3]);
 
-    //  Read data from file into vectors
+    //  Read data from file into vectors pointers
     let (x_ptr, y_ptr) = match file_ops::read_data(input_file_path) {
         Ok((x_ptr, y_ptr)) => (x_ptr, y_ptr),
         Err(e) => {
