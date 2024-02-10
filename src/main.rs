@@ -5,7 +5,7 @@ use feature_scaling::{features, file_ops, results};
 
 fn handle_input(args: &[String]) {
     if args.len() < 4 {
-        eprintln!("Error: no input argument");
+        eprintln!("Error: not enough input argument");
         std::process::exit(exitcode::USAGE);
     }
 
@@ -37,7 +37,7 @@ fn main() {
     handle_input(&args);
 
     let file_path = Path::new(&args[1]);
-    let output_path = Path::new(&args[1]);
+    let output_path = Path::new(&args[3]);
 
     let (x_ptr, y_ptr) = match file_ops::get_data(file_path) {
         Ok((x_ptr, y_ptr)) => (x_ptr, y_ptr),
@@ -53,12 +53,20 @@ fn main() {
     let result_x = features::mean_normal(&x);
     let result_y = results::mean_normal(&y);
 
-    file_ops::write_data(&result_x, &result_y, output_path);
+    println!("Writting to file: {}", output_path.to_str().unwrap());
 
-    for (i, x_set) in result_x.iter().enumerate() {
-        for x_v in x_set.iter() {
-            print!("{}, ", x_v);
+    match file_ops::write_data(&result_x, &result_y, output_path) {
+        Ok(_) => println!("Data written to file"),
+        Err(e) => {
+            eprintln!("{}", e.get_ref().unwrap());
+            std::process::exit(exitcode::IOERR);
         }
-        println!("{}", result_y[i]);
     }
+
+    // for (i, x_set) in result_x.iter().enumerate() {
+    //     for x_v in x_set.iter() {
+    //         print!("{}, ", x_v);
+    //     }
+    //     println!("{}", result_y[i]);
+    // }
 }
