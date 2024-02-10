@@ -20,38 +20,21 @@ pub fn get_data(path: &Path) -> Result<(Box<DoubleVecF64>, Box<Vec<f64>>), io::E
         }
     };
 
+    let mut x_slice: Vec<String> = Vec::new();
     let mut y: Vec<f64> = Vec::new();
-    let mut x: Vec<String> = Vec::new();
 
     // Read the file line by line
     // split each line by the last ',' into two vectors of v and y
     for line in lines {
         if let Some(data_tuple) = line.unwrap().rsplit_once(',') {
-            x.push(data_tuple.0.to_string());
+            x_slice.push(data_tuple.0.to_string());
             y.push(data_tuple.1.parse::<f64>().expect("Failed"));
         }
     }
 
-    let mut tmp: Vec<Vec<&str>> = Vec::new();
-
-    for i in x.iter() {
-        tmp.push(i.split(',').collect::<Vec<&str>>());
-    }
-
     let mut x: Vec<Vec<f64>> = Vec::new();
-
-    for i in tmp.iter() {
-        let mut tmp_f64: Vec<f64> = vec![1.0];
-
-        for j in i.iter().map(|e| e.to_string().parse::<f64>()) {
-            tmp_f64.push(j.unwrap());
-
-            // match j {
-            //     Ok(f) => tmp_f64.push(f),
-            //     Err(_) => (),
-            // }
-        }
-        x.push(tmp_f64);
+    for i in x_slice.iter() {
+        x.push(i.split(',').map(|x| x.parse::<f64>().unwrap()).collect());
     }
 
     Ok((Box::new(x), Box::new(y)))

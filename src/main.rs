@@ -22,7 +22,10 @@ fn main() {
 
     let (x_ptr, y_ptr) = match read_data::get_data(file_path) {
         Ok((x_ptr, y_ptr)) => (x_ptr, y_ptr),
-        Err(e) => panic!("{}", e.get_ref().unwrap()),
+        Err(e) => {
+            eprintln!("{}", e.get_ref().unwrap());
+            std::process::exit(exitcode::IOERR);
+        }
     };
 
     let x = *x_ptr;
