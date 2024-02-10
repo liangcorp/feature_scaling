@@ -27,9 +27,12 @@ fn argument_check(args: &[String]) -> Result<(), io::Error> {
 
 fn display_help(err: io::Error) {
     eprintln!("ERROR: {}\n", err);
-    println!("Usage: INPUT -o OUTPUT");
-    println!("Mean normalization of data from file <INPUT> into file <OUTPUT>");
-    println!("\t-o OUTPUT\tSpecify the output filename for result data\n");
+    let help_message = String::from(
+        "Usage: INPUT -o OUTPUT
+Mean normalization of data from file <INPUT> into file <OUTPUT>
+               \t-o OUTPUT\tSpecify the output filename for result data\n",
+    );
+    println!("{}", help_message);
     std::process::exit(exitcode::USAGE);
 }
 
@@ -38,11 +41,13 @@ fn main() {
 
     // check the input arguments
     match argument_check(&args) {
-        Ok(_) => (),
+        Ok(_) => print!("Reading data from path: "),
         Err(e) => display_help(e),
     };
 
     let input_file_path = Path::new(&args[1]);
+    println!("./{}", input_file_path.to_str().unwrap());
+
     let output_file_path = Path::new(&args[3]);
 
     //  Read data from file into vectors pointers
