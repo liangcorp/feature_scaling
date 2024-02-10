@@ -45,10 +45,10 @@ fn main() {
         Err(e) => display_help(e),
     };
 
+    //  Read data from file into vectors pointers
     let input_file_path = Path::new(&args[1]);
     print!("./{}... ", input_file_path.to_str().unwrap());
 
-    //  Read data from file into vectors pointers
     let (x_ptr, y_ptr) = match file_ops::read_data(input_file_path) {
         Ok((x_ptr, y_ptr)) => {
             println!("OK");
@@ -60,6 +60,7 @@ fn main() {
         }
     };
 
+    // Mean normalization on X (2D) and y (1D)
     let result_x = mean_normal::features(&x_ptr.to_vec());
     let result_y = mean_normal::results(&y_ptr);
 
