@@ -6,7 +6,7 @@ use std::path::Path;
 
 type DoubleVecF64 = Vec<Vec<f64>>;
 
-pub fn get_data(path: &Path) -> Result<(Box<DoubleVecF64>, Box<Vec<f64>>), io::Error> {
+pub fn read_data(path: &Path) -> Result<(Box<DoubleVecF64>, Box<Vec<f64>>), io::Error> {
     let lines = match File::open(path) {
         Ok(file) => io::BufReader::new(file).lines(),
         Err(error) if error.kind() == ErrorKind::NotFound => {
@@ -43,9 +43,6 @@ pub fn get_data(path: &Path) -> Result<(Box<DoubleVecF64>, Box<Vec<f64>>), io::E
 pub fn write_data(result_x: &[Vec<f64>], result_y: &[f64], path: &Path) -> Result<(), io::Error> {
     let mut file = match File::create(path) {
         Ok(f) => io::BufWriter::new(f),
-        Err(error) if error.kind() == ErrorKind::NotFound => {
-            return Err(Error::new(ErrorKind::NotFound, "File not found"));
-        }
         Err(error) if error.kind() == ErrorKind::PermissionDenied => {
             return Err(Error::new(ErrorKind::PermissionDenied, "Permission denied"));
         }

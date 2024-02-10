@@ -3,7 +3,7 @@ pub use std::path::Path;
 
 use feature_scaling::{features, file_ops, results};
 
-fn handle_input(args: &[String]) {
+fn argument_check(args: &[String]) {
     if args.len() < 4 {
         eprintln!("Error: not enough input argument");
         std::process::exit(exitcode::USAGE);
@@ -34,12 +34,13 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     // check the input arguments
-    handle_input(&args);
+    argument_check(&args);
 
-    let file_path = Path::new(&args[1]);
-    let output_path = Path::new(&args[3]);
+    let input_file_path = Path::new(&args[1]);
+    let output_file_path = Path::new(&args[3]);
 
-    let (x_ptr, y_ptr) = match file_ops::get_data(file_path) {
+    //  Read data from file into vectors
+    let (x_ptr, y_ptr) = match file_ops::read_data(input_file_path) {
         Ok((x_ptr, y_ptr)) => (x_ptr, y_ptr),
         Err(e) => {
             eprintln!("{}", e.get_ref().unwrap());
@@ -47,26 +48,15 @@ fn main() {
         }
     };
 
-    let x = *x_ptr;
-    let y = *y_ptr;
+    let result_x = features::mean_normal(&x_ptr.to_vec());
+    let result_y = results::mean_normal(&y_ptr);
 
-    let result_x = features::mean_normal(&x);
-    let result_y = results::mean_normal(&y);
-
-    println!("Writting to file: {}", output_path.to_str().unwrap());
-
-    match file_ops::write_data(&result_x, &result_y, output_path) {
+    //  Write to file
+    match file_ops::write_data(&result_x, &result_y, output_file_path) {
         Ok(_) => println!("Data written to file"),
         Err(e) => {
             eprintln!("{}", e.get_ref().unwrap());
             std::process::exit(exitcode::IOERR);
         }
     }
-
-    // for (i, x_set) in result_x.iter().enumerate() {
-    //     for x_v in x_set.iter() {
-    //         print!("{}, ", x_v);
-    //     }
-    //     println!("{}", result_y[i]);
-    // }
 }
