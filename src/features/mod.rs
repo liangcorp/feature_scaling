@@ -12,7 +12,7 @@
 #[allow(dead_code)]
 type DoubleVecF64 = Vec<Vec<f64>>;
 
-pub fn mean_normal_multiple(v: &[Vec<f64>]) -> (Box<DoubleVecF64>, Box<Vec<f64>>, Box<Vec<f64>>) {
+pub fn mean_normal(v: &[Vec<f64>]) -> (Box<DoubleVecF64>, Box<Vec<f64>>, Box<Vec<f64>>) {
     let mut max: Vec<f64> = Vec::new();
     let mut min: Vec<f64> = Vec::new();
     let mut mean: Vec<f64> = Vec::new();

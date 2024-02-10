@@ -1,9 +1,7 @@
 use std::env;
 pub use std::path::Path;
 
-use feature_scaling::features::mean_normal_multiple;
-use feature_scaling::read_data;
-use feature_scaling::results::mean_normal_single;
+use feature_scaling::{features, read_data, results};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -31,9 +29,9 @@ fn main() {
     let x = *x_ptr;
     let y = *y_ptr;
 
-    let (ex_2_nor_y, y_mean, y_std_dev) = mean_normal_single(&y);
+    let (ex_2_nor_y, y_mean, y_std_dev) = results::mean_normal(&y);
 
-    let (ex_2_nor_x, x_mean, x_std_dev) = mean_normal_multiple(&x);
+    let (ex_2_nor_x, x_mean, x_std_dev) = features::mean_normal(&x);
 
     println!("{:?} {:?} {:?}", ex_2_nor_x, x_mean, x_std_dev);
     println!("{:?} {} {}", ex_2_nor_y, y_mean, y_std_dev);
