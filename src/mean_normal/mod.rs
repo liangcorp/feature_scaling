@@ -3,7 +3,9 @@
 
 type DoubleVecF64 = Vec<Vec<f64>>;
 
-/// This is used on X that usually contains multiple features (2D).
+/// Mean normalization for X.
+/// X represent features which contains more than one field
+/// Therefore, it is represented as a 2D vector
 pub fn features(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
     let mut max: Vec<f64> = Vec::new();
     let mut min: Vec<f64> = Vec::new();
@@ -67,19 +69,20 @@ pub fn features(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
     Box::new(result)
 }
 
-/// This is used on Y that is a 1D vector.
-pub fn results(v: &Vec<f64>) -> Box<Vec<f64>> {
+/// Mean normalization for Y. Y only has one field.
+/// It's represented as a 1D vector
+pub fn results(y: &Vec<f64>) -> Box<Vec<f64>> {
     let mut max: f64;
     let mut min: f64;
     let mut result: Vec<f64> = Vec::new();
     let mut sum: f64 = 0.0;
 
     /* Set max and min for feature */
-    max = v[0];
-    min = v[0];
+    max = y[0];
+    min = y[0];
 
     /* Find max and min for feature */
-    for i in v.iter() {
+    for i in y.iter() {
         if max < *i {
             max = *i;
         } else if min > *i {
@@ -90,16 +93,16 @@ pub fn results(v: &Vec<f64>) -> Box<Vec<f64>> {
         sum += *i;
     }
 
-    let mean = sum / v.len() as f64;
+    let mean = sum / y.len() as f64;
 
     sum = 0.0;
-    for i in v.iter() {
+    for i in y.iter() {
         sum += (*i - mean) * (*i - mean);
     }
 
-    let std_dev = (sum / v.len() as f64).sqrt();
+    let std_dev = (sum / y.len() as f64).sqrt();
 
-    for i in v.iter() {
+    for i in y.iter() {
         result.push((*i - mean) / std_dev);
     }
 
