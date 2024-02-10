@@ -46,7 +46,6 @@ pub fn features(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
         *j /= row as f64;
     }
 
-
     //  Loop from colum to row.
     //  Calculate the standard deviation for each feature
     for j in 0..col {
