@@ -1,8 +1,8 @@
 //! # Implementation of feature normalisation
-///
-/// Use mean normalization on 1D array.
-/// This is used on Y that is a 1D array.
-///
+//!
+//! Use mean normalization on 1D vector.
+//! This is used on Y that is a 1D vector.
+//!
 #[allow(dead_code)]
 pub fn mean_normal(v: &Vec<f64>) -> Box<Vec<f64>> {
     let mut max: f64;

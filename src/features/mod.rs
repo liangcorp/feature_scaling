@@ -1,13 +1,5 @@
 //! # Use mean normalization on 2D array.
 //! This is used on X that usually contains multiple features.
-//! The function returns a pointer to a structure.
-//! The structure contains pointers to the following:
-//!     - Pointer to the result 2D array
-//!     - Pointer to the list of mean
-//!     - Pointer to the list of standard deviation
-//!
-//! NOTE: Run free on pointers of the structure
-//! and its elements in main.
 //!
 #[allow(dead_code)]
 type DoubleVecF64 = Vec<Vec<f64>>;
