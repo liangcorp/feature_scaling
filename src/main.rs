@@ -1,40 +1,46 @@
-use std::env;
 use std::path::Path;
+use std::{env, io};
 
 use feature_scaling::{file_ops, mean_normal};
 
-fn argument_check(args: &[String]) {
+fn argument_check(args: &[String]) -> Result<(), io::Error> {
+    let mut error = String::new();
+
     if args.len() < 4 {
-        eprintln!("Error: not enough input argument");
-        std::process::exit(exitcode::USAGE);
+        error = String::from("not enough input argument");
+    } else if args[1].is_empty() {
+        error = String::from("filename is empty");
+    } else if args[2].is_empty() {
+        error = String::from("empty flag");
+    } else if args[2] != "-o" {
+        error = String::from("unknow flag");
+    } else if args[3].is_empty() {
+        error = String::from("output filename");
     }
 
-    if args[1].is_empty() {
-        eprintln!("Error: filename is empty");
-        std::process::exit(exitcode::USAGE);
+    if error.is_empty() {
+        Ok(())
+    } else {
+        Err(io::Error::new(io::ErrorKind::NotFound, error))
     }
+}
 
-    if args[2].is_empty() {
-        eprintln!("Error: empty flag");
-        std::process::exit(exitcode::USAGE);
-    }
-
-    if args[2] != "-o" {
-        eprint!("Error: unknow flag");
-        std::process::exit(exitcode::USAGE);
-    }
-
-    if args[3].is_empty() {
-        eprintln!("Error in output filename");
-        std::process::exit(exitcode::USAGE);
-    }
+fn display_help(err: io::Error) {
+    eprintln!("ERROR: {}\n", err);
+    println!("Usage: INPUT -o OUTPUT");
+    println!("Mean normalization of data from file <INPUT> into file <OUTPUT>");
+    println!("\t-o OUTPUT\tSpecify the output filename for result data\n");
+    std::process::exit(exitcode::USAGE);
 }
 
 fn main() {
     let args: Vec<String> = env::args().collect();
 
     // check the input arguments
-    argument_check(&args);
+    match argument_check(&args) {
+        Ok(_) => (),
+        Err(e) => display_help(e),
+    };
 
     let input_file_path = Path::new(&args[1]);
     let output_file_path = Path::new(&args[3]);
