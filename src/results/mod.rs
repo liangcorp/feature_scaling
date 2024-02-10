@@ -4,7 +4,7 @@
 /// This is used on Y that is a 1D array.
 ///
 #[allow(dead_code)]
-pub fn mean_normal(v: &Vec<f64>) -> (Box<Vec<f64>>, f64, f64) {
+pub fn mean_normal(v: &Vec<f64>) -> Box<Vec<f64>> {
     let mut max: f64;
     let mut min: f64;
     let mut result: Vec<f64> = Vec::new();
@@ -39,5 +39,5 @@ pub fn mean_normal(v: &Vec<f64>) -> (Box<Vec<f64>>, f64, f64) {
         result.push((*i - mean) / std_dev);
     }
 
-    (Box::new(result), mean, std_dev)
+    Box::new(result)
 }

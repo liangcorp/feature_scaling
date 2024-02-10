@@ -29,10 +29,14 @@ fn main() {
     let x = *x_ptr;
     let y = *y_ptr;
 
-    let (ex_2_nor_y, y_mean, y_std_dev) = results::mean_normal(&y);
+    let result_x = features::mean_normal(&x);
+    let result_y = results::mean_normal(&y);
 
-    let (ex_2_nor_x, x_mean, x_std_dev) = features::mean_normal(&x);
+    for (i, x_set) in result_x.iter().enumerate() {
+        for x_v in x_set.iter() {
+            print!("{}, ", x_v);
+        }
+        println!("{}", result_y[i]);
+    }
 
-    println!("{:?} {:?} {:?}", ex_2_nor_x, x_mean, x_std_dev);
-    println!("{:?} {} {}", ex_2_nor_y, y_mean, y_std_dev);
 }

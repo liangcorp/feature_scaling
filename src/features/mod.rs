@@ -12,61 +12,66 @@
 #[allow(dead_code)]
 type DoubleVecF64 = Vec<Vec<f64>>;
 
-pub fn mean_normal(v: &[Vec<f64>]) -> (Box<DoubleVecF64>, Box<Vec<f64>>, Box<Vec<f64>>) {
+pub fn mean_normal(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
     let mut max: Vec<f64> = Vec::new();
     let mut min: Vec<f64> = Vec::new();
     let mut mean: Vec<f64> = Vec::new();
     let mut std_dev: Vec<f64> = Vec::new();
 
-    let mut result: DoubleVecF64 = v.to_vec();
+    let mut result: DoubleVecF64 = x.to_vec();
 
-    let row = v.len();
-    let col = v[0].len();
+    let row = x.len();
+    let col = x[0].len();
 
     let mut sum: f64;
 
-    for i in v[0].iter() {
+    // Set max and min for each feature
+    for i in x[0].iter() {
         max.push(*i);
         min.push(*i);
     }
 
-    mean.push(1.0);
-
-    for j in 1..col {
+    // Find max and min for each feature
+    // Each column is a feature, this means
+    //  we need to loop from column to row.
+    for j in 0..col {
         sum = 0.0;
-        for i in v.iter().enumerate().take(row) {
-            if max[j] < v[i.0][j] {
-                max[j] = v[i.0][j];
-            } else if min[j] > v[i.0][j] {
-                min[j] = v[i.0][j];
+        for i in x.iter().enumerate().take(row) {
+            if max[j] < x[i.0][j] {
+                max[j] = x[i.0][j];
+            } else if min[j] > x[i.0][j] {
+                min[j] = x[i.0][j];
             } else {
                 // Do nothing
             }
-            sum += v[i.0][j];
+            sum += x[i.0][j];
         }
         mean.push(sum);
     }
 
-    for j in mean.iter_mut().take(col).skip(1) {
+    // find mean for each feature
+    for j in mean.iter_mut().take(col) {
         *j /= row as f64;
     }
 
-    std_dev.push(1.0);
 
-    for j in 1..col {
+    //  Loop from colum to row.
+    //  Calculate the standard deviation for each feature
+    for j in 0..col {
         sum = 0.0;
-        for i in v.iter().take(row) {
+        for i in x.iter().take(row) {
             sum += (i[j] - mean[j]) * (i[j] - mean[j]);
         }
 
-        std_dev.push((sum / v.len() as f64).sqrt());
+        std_dev.push((sum / x.len() as f64).sqrt());
     }
 
-    for j in 1..col {
+    //  Set the value of new 2D arry to normalized value
+    for j in 0..col {
         for i in 0..row {
-            result[i][j] = (v[i][j] - mean[j]) / std_dev[j];
+            result[i][j] = (x[i][j] - mean[j]) / std_dev[j];
         }
     }
 
-    (Box::new(result), Box::new(mean), Box::new(std_dev))
+    Box::new(result)
 }
