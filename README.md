@@ -3,5 +3,5 @@
 Sample command:
 
 ```BASH
-./bin/feature_scaling <input_data_file> -o <output_data_file>
+cargo run <input_data_file> -o <output_data_file>
 ```
