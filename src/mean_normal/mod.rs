@@ -10,7 +10,7 @@ pub fn features(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
     let mut max: Vec<f64> = Vec::new();
     let mut min: Vec<f64> = Vec::new();
     let mut mean: Vec<f64> = Vec::new();
-    let mut std_dev: Vec<f64> = Vec::new();
+    let mut std_deviation: Vec<f64> = Vec::new();
 
     let mut result: DoubleVecF64 = x.to_vec();
 
@@ -56,13 +56,13 @@ pub fn features(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
             sum += (i[j] - mean[j]) * (i[j] - mean[j]);
         }
 
-        std_dev.push((sum / x.len() as f64).sqrt());
+        std_deviation.push((sum / x.len() as f64).sqrt());
     }
 
     //  Set the value of new 2D arry to normalized value
     for j in 0..col {
         for i in 0..row {
-            result[i][j] = (x[i][j] - mean[j]) / std_dev[j];
+            result[i][j] = (x[i][j] - mean[j]) / std_deviation[j];
         }
     }
 
@@ -100,10 +100,10 @@ pub fn results(y: &Vec<f64>) -> Box<Vec<f64>> {
         sum += (*i - mean) * (*i - mean);
     }
 
-    let std_dev = (sum / y.len() as f64).sqrt();
+    let std_deviation = (sum / y.len() as f64).sqrt();
 
     for i in y.iter() {
-        result.push((*i - mean) / std_dev);
+        result.push((*i - mean) / std_deviation);
     }
 
     Box::new(result)
