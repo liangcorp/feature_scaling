@@ -9,27 +9,29 @@ type DoubleVecF64 = Vec<Vec<f64>>;
 pub fn features(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
     let mut vec_max: Vec<f64> = Vec::new();
     let mut vec_min: Vec<f64> = Vec::new();
-    let mut vec_main: Vec<f64> = Vec::new();
-    let mut std_deviations: Vec<f64> = Vec::new();
+    let mut vec_mean: Vec<f64> = Vec::new();
+    let mut vec_std_devi: Vec<f64> = Vec::new();
 
     let mut result: DoubleVecF64 = x.to_vec();
 
     let row = x.len();
     let col = x[0].len();
 
-    let mut vec_sum: f64;
+    let mut sum: f64;
 
-    // Set max and min for each feature
+    // Set default value max and min for each feature
+    // The goal is to expend the vectors to the size of
+    // the number of features.
     for i in x[0].iter() {
         vec_max.push(*i);
         vec_min.push(*i);
     }
 
-    // Find max, min and sum of total of each feature
+    // Find max, min and sum of each feature
     // Each column is a feature, this means
     //  we need to loop from column to row.
     for j in 0..col {
-        vec_sum = 0.0;
+        sum = 0.0;
         for x_row in x.iter() {
             if vec_max[j] < x_row[j] {
                 vec_max[j] = x_row[j];
@@ -38,31 +40,33 @@ pub fn features(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
             } else {
                 // Do nothing
             }
-            vec_sum += x_row[j];
+            sum += x_row[j];
         }
-        vec_main.push(vec_sum);
+        vec_mean.push(sum); // Fill the vector with sum for now
+                                // Next step will calculate the means
     }
 
     // find mean for each feature
-    for mean in vec_main.iter_mut() {
+    // mean = sum / no of value
+    for mean in vec_mean.iter_mut() {
         *mean /= row as f64;
     }
 
     //  Loop from colum to row.
     //  Calculate the standard deviation for each feature
     for j in 0..col {
-        vec_sum = 0.0;
-        for i in x.iter() {
-            vec_sum += (i[j] - vec_main[j]) * (i[j] - vec_main[j]);
+        sum = 0.0;
+        for x_row in x.iter() {
+            sum += (x_row[j] - vec_mean[j]) * (x_row[j] - vec_mean[j]);
         }
 
-        std_deviations.push((vec_sum / x.len() as f64).sqrt());
+        vec_std_devi.push((sum / col as f64).sqrt());
     }
 
     //  Set the value of new 2D arry to normalized value
     for j in 0..col {
         for i in 0..row {
-            result[i][j] = (x[i][j] - vec_main[j]) / std_deviations[j];
+            result[i][j] = (x[i][j] - vec_mean[j]) / vec_std_devi[j];
         }
     }
 
