@@ -60,10 +60,11 @@ fn main() {
         }
     };
 
+    // Spawn thread for mean normalization on X (2D)
     let thread_join_handle = thread::spawn(move || mean_normal::features(&x_ptr.to_vec()));
     let result_x = thread_join_handle.join().ok().unwrap();
 
-    // Mean normalization on X (2D) and y (1D)
+    // Mean normalization on y (1D)
     let result_y = mean_normal::results(&y_ptr);
 
     //  Write to file
