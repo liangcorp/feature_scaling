@@ -34,11 +34,12 @@ pub fn features(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
         for x_row in x.iter() {
             if vec_max[j] < x_row[j] {
                 vec_max[j] = x_row[j];
-            } else if vec_min[j] > x_row[j] {
-                vec_min[j] = x_row[j];
-            } else {
-                // Do nothing
             }
+
+            if vec_min[j] > x_row[j] {
+                vec_min[j] = x_row[j];
+            }
+
             sum += x_row[j];
         }
 
@@ -69,10 +70,9 @@ pub fn results(y: &Vec<f64>) -> Box<Vec<f64>> {
     for element in y.iter() {
         if max < *element {
             max = *element;
-        } else if min > *element {
+        }
+        if min > *element {
             min = *element;
-        } else {
-            // do nothing
         }
     }
 
