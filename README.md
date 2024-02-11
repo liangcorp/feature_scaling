@@ -10,9 +10,9 @@ cargo run <input_data_file> -o <output_data_file>
 
 Mean Normalization is a way to implement Feature Scaling.
 
-`mean` - The mean is the average of the numbers.
-`max` - The smallest number in the list of numbers.
-`min` - The largest number in the list of numbers.
+- `mean` - The mean is the average of the numbers.
+- `max` - The smallest number in the list of numbers.
+- `min` - The largest number in the list of numbers.
 
 $$
 x' = { x - mean(x) \over max(x) - min(x) }
