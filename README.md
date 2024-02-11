@@ -19,3 +19,4 @@ x' = { x - mean(x) \over max(x) - min(x) }
 $$
 
 `x` represent a number in the list of numbers `x[n]`
+`x'` is the result after mean normalization.
