@@ -76,7 +76,6 @@ pub fn results(y: &Vec<f64>) -> Box<Vec<f64>> {
         }
     }
 
-    // let max: f64 = (*y).iter().max().unwrap();
     let sum: f64 = y.iter().sum();
 
     let mean = sum / y.len() as f64;
