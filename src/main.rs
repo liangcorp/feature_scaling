@@ -3,10 +3,12 @@ use std::{env, io, thread};
 
 use feature_scaling::{file_ops, mean_normal};
 
+const ARGS_SIZE_LIMIT: usize = 4;
+
 fn argument_check(args: &[String]) -> Result<(), io::Error> {
     let mut error = String::new();
 
-    if args.len() < 4 {
+    if args.len() < ARGS_SIZE_LIMIT {
         error = String::from("not enough input argument");
     } else if args[1].is_empty() {
         error = String::from("filename is empty");
