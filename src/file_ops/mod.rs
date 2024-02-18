@@ -55,9 +55,9 @@ pub fn write_data(result_x: &[Vec<f64>], result_y: &[f64], path: &Path) -> Resul
 
     for (i, x_set) in result_x.iter().enumerate() {
         for x_v in x_set.iter() {
-            file.write_all(format!("{},", x_v).as_bytes())?;
+            file.write_all(format!("{:.4},", x_v).as_bytes())?;
         }
-        file.write_all(format!("{}\n", result_y[i]).as_bytes())?;
+        file.write_all(format!("{:.4}\n", result_y[i]).as_bytes())?;
     }
 
     Ok(())
