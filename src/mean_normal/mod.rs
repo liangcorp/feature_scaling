@@ -1,22 +1,22 @@
 //! # Use mean normalization on 2D and 1D array.
 //!
 
-type DoubleVecF64 = Vec<Vec<f64>>;
+type DoubleVecF64 = Vec<Vec<f32>>;
 
 /// Mean normalization for X.
 /// X represent features (i.e. columns) which contains more than one field
 /// Therefore, it is represented as a 2D vector
-pub fn features(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
-    let mut vec_max: Vec<f64> = Vec::new();
-    let mut vec_min: Vec<f64> = Vec::new();
-    let mut vec_mean: Vec<f64> = Vec::new();
+pub fn features(x: &[Vec<f32>]) -> Box<DoubleVecF64> {
+    let mut vec_max: Vec<f32> = Vec::new();
+    let mut vec_min: Vec<f32> = Vec::new();
+    let mut vec_mean: Vec<f32> = Vec::new();
 
     let mut result: DoubleVecF64 = x.to_vec();
 
     let row = x.len();
     let col = x[0].len();
 
-    let mut sum: f64;
+    let mut sum: f32;
 
     // Set default value max and min for each feature (i.e. column)
     // The goal is to expend the vectors to the size of
@@ -44,7 +44,7 @@ pub fn features(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
         }
 
         // mean = sum of elements / no of elements
-        vec_mean.push(sum / row as f64);
+        vec_mean.push(sum / row as f32);
 
         for i in 0..row {
             //  Set the value of new 2D arry to normalized value
@@ -57,10 +57,10 @@ pub fn features(x: &[Vec<f64>]) -> Box<DoubleVecF64> {
 
 /// Mean normalization for Y. Y only has one field.
 /// It's represented as a 1D vector
-pub fn results(y: &Vec<f64>) -> Box<Vec<f64>> {
-    let mut max: f64;
-    let mut min: f64;
-    let mut result: Vec<f64> = Vec::new();
+pub fn results(y: &[f32]) -> Box<Vec<f32>> {
+    let mut max: f32;
+    let mut min: f32;
+    let mut result: Vec<f32> = Vec::new();
 
     /* Set max and min for feature */
     max = y[0];
@@ -76,9 +76,9 @@ pub fn results(y: &Vec<f64>) -> Box<Vec<f64>> {
         }
     }
 
-    let sum: f64 = y.iter().sum();
+    let sum: f32 = y.iter().sum();
 
-    let mean = sum / y.len() as f64;
+    let mean = sum / y.len() as f32;
 
     for element in y.iter() {
         result.push((*element - mean) / (max - min));
