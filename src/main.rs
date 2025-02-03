@@ -35,7 +35,7 @@ Mean normalization of data from file <INPUT> into file <OUTPUT>
                \t-o OUTPUT\tSpecify the output filename for result data\n",
     );
     println!("{}", help_message);
-    std::process::exit(exitcode::USAGE);
+    std::process::exit(1);
 }
 
 fn main() {
@@ -58,7 +58,7 @@ fn main() {
         }
         Err(e) => {
             eprintln!("{}", e.get_ref().unwrap());
-            std::process::exit(exitcode::IOERR);
+            std::process::exit(1);
         }
     };
 
@@ -79,7 +79,7 @@ fn main() {
         Ok(_) => println!("OK"),
         Err(e) => {
             eprintln!("{}", e.get_ref().unwrap());
-            std::process::exit(exitcode::IOERR);
+            std::process::exit(1);
         }
     }
 }
